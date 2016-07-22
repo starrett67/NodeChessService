@@ -1,0 +1,19 @@
+{
+  "name": "chess_client",
+  "version": "1.0.0",
+  "description": "This package contains backend code for a chess game",
+  "main": "index.js",
+  "dependencies": {
+    "shortid": "^2.2.6"
+  },
+  "devDependencies": {
+    "mocha": "^2.5.3",
+    "chai": "^3.5.0",
+    "sinon": "^1.17.4"
+  },
+  "scripts": {
+    "test": "node ./node_modules/mocha/bin/mocha -w"
+  },
+  "author": "Josh Starrett",
+  "license": "ISC"
+}

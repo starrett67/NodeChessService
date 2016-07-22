@@ -1,0 +1,50 @@
+{
+    "a":{
+        "1": "rook",
+        "2": "pawn",
+        "7": "pawn",
+        "8": "rook"
+    },
+    "b":{
+        "1": "knight",
+        "2": "pawn",
+        "7": "pawn",
+        "8": "knight"
+    },
+    "c":{
+        "1": "bishop",
+        "2": "pawn",
+        "7": "pawn",
+        "8": "bishop"
+    },
+    "d":{
+        "1": "queen",
+        "2": "pawn",
+        "7": "pawn",
+        "8": "queen"
+    },
+    "e":{
+        "1": "king",
+        "2": "pawn",
+        "7": "pawn",
+        "8": "king"
+    },
+    "f":{
+        "1": "bishop",
+        "2": "pawn",
+        "7": "pawn",
+        "8": "bishop"
+    },
+    "g":{
+        "1": "knight",
+        "2": "pawn",
+        "7": "pawn",
+        "8": "knight"
+    },
+    "h":{
+        "1": "rook",
+        "2": "pawn",
+        "7": "pawn",
+        "8": "rook"
+    }
+}
