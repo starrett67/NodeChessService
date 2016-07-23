@@ -18,7 +18,7 @@ describe('board helper tests:', function(){
             for(var row = 0; row < 8; row++){
                 var spot = board[col][row];
                 if(row < whiteRowLength){
-                    var piece = new Piece("White", new Position(col, row));
+                    var piece = new Piece("White", new Position(col, row + 1));
                     spot.should.deep.equal(piece);
                 }                   
             }
@@ -31,7 +31,7 @@ describe('board helper tests:', function(){
             for(var row = 0; row < 8; row++){
                 var spot = board[col][row];
                 if(row > blackRowLength){
-                    var piece = new Piece("Black", new Position(col, row));
+                    var piece = new Piece("Black", new Position(col, row + 1));
                     spot.should.deep.equal(piece);
                 }                  
             }
