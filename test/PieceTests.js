@@ -1,4 +1,3 @@
-'use strict'
 var chai = require('chai'),
     should = chai.should(),
     Piece = require('../lib/Piece'),
@@ -18,3 +17,4 @@ describe('GetPieceType', function(){
         should.not.exist(Piece.private.GetPieceType(new Position("e", 4)));
     });
 });
+
