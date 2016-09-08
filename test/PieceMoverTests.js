@@ -1,6 +1,8 @@
 var PieceMover = require('../lib/PieceMover'),
     Piece = require('../lib/Piece'),
     Position = require('../lib/Position'),
+    Directions = require('../lib/Directions'),
+    BoardProperties = require('../lib/BoardProperties'),
     chai = require('chai'),
     should = chai.should(),
     Teams = require('../lib/Teams'),
@@ -136,7 +138,7 @@ describe('PieceMover tests:', function(){
             moves.should.contain(expectedVerticalMove);
         });
 
-        it('should return one moves if pawn has not moved', function(){
+        it('should return one move if pawn has moved', function(){
             var pawn = new Piece(WhiteTeam, new Position('a', 2));
             pawn.hasMoved = true;
             var boardPieces = [ pawn ];
@@ -159,7 +161,7 @@ describe('PieceMover tests:', function(){
             moves.should.contain(enemyPos1);
             moves.should.contain(enemyPos2);
         });
-        it('should return 0 moves when the white pawn reacheds row 8', function(){
+        it('should return 0 moves when the white pawn reaches row 8', function(){
             var pawn = new Piece(WhiteTeam, new Position('a', 2));
             pawn.hasMoved = true;
             pawn.position.row = 8;
@@ -167,7 +169,7 @@ describe('PieceMover tests:', function(){
             var moves = PieceMover.private.getPawnMoves(boardPieces, pawn);
             moves.length.should.equal(0);
         });
-        it('should return 0 moves when the black pawn reacheds row 1', function(){
+        it('should return 0 moves when the black pawn reaches row 1', function(){
             var pawn = new Piece(BlackTeam, new Position('a', 7));
             pawn.hasMoved = true;
             pawn.position.row = 1;
@@ -184,6 +186,54 @@ describe('PieceMover tests:', function(){
             var moves = PieceMover.private.getPawnMoves(boardPieces, pawn);
             moves.should.not.contain(kingPos);
         });
+    });
 
+    describe('createMovesLine', function(){
+        it('should return 7 moves in the vertical direction if on row 1', function(){
+            var rook = new Piece(WhiteTeam, new Position('a', 1));
+            var boardPieces = [ rook ];
+            var moves = PieceMover.private.createMovesLine(boardPieces, rook, Directions.verticalUp);
+            moves.length.should.equal(7);
+            for(var i = 2; i <= 8; i++){
+                var pos = new Position('a', i);
+                moves.should.contain(pos);
+            }
+        });
+        it('should return 7 moves in the vertical direction if on row 8', function(){
+            var rook = new Piece(BlackTeam, new Position('a', 8));
+            var boardPieces = [ rook ];
+            var moves = PieceMover.private.createMovesLine(boardPieces, rook, Directions.verticalDown);
+            moves.length.should.equal(7);
+            for(var i = 1; i <= 7; i++){
+                var pos = new Position('a', i);
+                moves.should.contain(pos);
+            }
+        });
+        it('should return 7 moves in the horizontal direction if on col A', function(){
+            var rook = new Piece(BlackTeam, new Position('a', 8));
+            rook.position.row = 5;
+            var boardPieces = [ rook ];
+            var moves = PieceMover.private.createMovesLine(boardPieces, rook, Directions.horizontalRight);
+            moves.length.should.equal(7);
+            BoardProperties.forEachColumn(function(col){
+                if(col != 'a'){
+                    var pos = new Position(col, rook.position.row);
+                    moves.should.contain(pos);
+                }
+            });
+        });
+        it('should return 7 moves in the horizontal direction if on col h', function(){
+            var rook = new Piece(BlackTeam, new Position('h', 8));
+            rook.position.row = 3;
+            var boardPieces = [ rook ];
+            var moves = PieceMover.private.createMovesLine(boardPieces, rook, Directions.horizontalLeft);
+            moves.length.should.equal(7);
+            BoardProperties.forEachColumn(function(col){
+                if(col != 'h'){
+                    var pos = new Position(col, rook.position.row);
+                    moves.should.contain(pos);
+                }
+            });
+        });
     });
 });
