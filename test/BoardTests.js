@@ -6,7 +6,8 @@ var chai = require('chai'),
 describe('board helper tests:', function(){
     var Board = require('../lib/Board');
     var Piece = require('../lib/Piece');
-    var Position = require('../lib/Position');
+    var Position = require('../lib/Position');    
+    var BoardProperties = require('../lib/BoardProperties');
     var Teams = require('../lib/Teams');
     var newBoard = require('../lib/NewBoard.json');
     var testBoard;
@@ -18,7 +19,7 @@ describe('board helper tests:', function(){
     });
 
     var whitePiecesTest = function(whiteRowLength){
-        newBoard.forEachKey(function(col){
+        BoardProperties.forEachColumn(function(col){
             for(var row = 1; row <= 8; row++){
                 var pos = new Position(col, row);
                 var spot = testBoard.Pieces.getPieceInPosition(pos);
@@ -32,7 +33,7 @@ describe('board helper tests:', function(){
 
     var blackPiecesTest = function(blackRowLength)
     {
-        newBoard.forEachKey(function(col){
+        BoardProperties.forEachColumn(function(col){
             for(var row = 1; row <= 8; row++){
                 var pos = new Position(col, row);
                 var spot = testBoard.Pieces.getPieceInPosition(pos);
@@ -72,6 +73,6 @@ describe('board helper tests:', function(){
         it('should have 2 rows of black pieces and white pieces', function(){
             whitePiecesTest(2);
             blackPiecesTest(7);
-        })
-    })
+        });
+    });
 });
