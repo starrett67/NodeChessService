@@ -2,6 +2,7 @@ var PieceMover = require('../lib/PieceMover'),
     Piece = require('../lib/Piece'),
     Position = require('../lib/Position'),
     Directions = require('../lib/Directions'),
+    Board = require('../lib/Board');
     BoardProperties = require('../lib/BoardProperties'),
     chai = require('chai'),
     should = chai.should(),
@@ -334,6 +335,70 @@ describe('PieceMover tests:', function(){
             var boardPieces = [ rook, piece1, piece2 ];
             var moves = PieceMover.private.getRookMoves(boardPieces, rook);
             moves.length.should.equal(8);
+        });
+    });
+    describe('getBishopMoves', function(){
+        it('should return all diagonal moves in each direction', function(){
+             var bishop = new Piece(BlackTeam, new Position('f', 8));
+            bishop.position.row = 4;
+            bishop.position.column = 'd';
+            var boardPieces = [ bishop ];
+            var moves = PieceMover.private.getBishopMoves(boardPieces, bishop);
+            moves.length.should.equal(13);
+        });
+        it('should return all diagonal moves if one direction does not return an multiple moves', function(){
+             var bishop = new Piece(BlackTeam, new Position('f', 8));
+            bishop.position.row = 7;
+            var boardPieces = [ bishop ];
+            var moves = PieceMover.private.getBishopMoves(boardPieces, bishop);
+            moves.length.should.equal(9);
+        });
+        it('should return all diagonal moves in two directions', function(){
+            var bishop = new Piece(BlackTeam, new Position('f', 8));
+            var boardPieces = [ bishop ];
+            var moves = PieceMover.private.getBishopMoves(boardPieces, bishop);
+            moves.length.should.equal(7);
+        });
+        it('should return all diagonal moves in two directions and blocked by pieces', function(){
+            var bishop = new Piece(BlackTeam, new Position('c', 8));
+            var piece1 = new Piece(BlackTeam, new Position('a', 6));
+            var piece2 = new Piece(WhiteTeam, new Position('f', 5));
+            var boardPieces = [ bishop, piece1, piece2 ];
+            var moves = PieceMover.private.getBishopMoves(boardPieces, bishop);
+            moves.length.should.equal(4);
+        });
+    });
+    describe('getKingMoves', function(){
+        it('should return a move in each direction if king is in middle of board', function(){
+            var king = new Piece(WhiteTeam, new Position('e', 8));
+            king.position.row = 5;
+            var boardPieces = [ king ];
+            var moves = PieceMover.private.getKingMoves(boardPieces, king);
+            moves.should.contain(new Position('e', 6));
+            moves.should.contain(new Position('e', 4));
+            moves.should.contain(new Position('d', 5));
+            moves.should.contain(new Position('f', 5));
+        });
+        it('should return a move that puts the king in check', function(){
+            var king = new Piece(BlackTeam, new Position('e', 8));
+            var rook = new Piece(WhiteTeam, new Position('a', 1));
+            rook.position.column = 'd';
+            var boardPieces = [ king, rook ];
+            rook.validMoves = PieceMover.private.getRookMoves(boardPieces, rook);
+            var moves = PieceMover.private.getKingMoves(boardPieces, king);
+            moves.should.not.contain(new Position('d', 8));
+            moves.length.should.equal(3);
+        });
+        it('should not allow the king to attack a piece and put itself in check', function(){
+            var king = new Piece(BlackTeam, new Position('e', 8));
+            var rook = new Piece(WhiteTeam, new Position('a', 1));
+            var enemyPiece = new Piece(WhiteTeam, new Position('d', 8));
+            rook.position.column = 'd';
+            var boardPieces = [ king, rook, enemyPiece ];
+            rook.validMoves = PieceMover.private.getRookMoves(boardPieces, rook);
+            var moves = PieceMover.private.getKingMoves(boardPieces, king);
+            moves.should.not.contain(new Position('d', 8));
+            moves.length.should.equal(3);
         });
     });
 });
