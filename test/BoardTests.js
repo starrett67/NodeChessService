@@ -3,16 +3,15 @@ var chai = require('chai'),
     expect = chai.expect(),
     sinon = require('sinon');
 
-describe('board helper tests:', function(){
-    var Board = require('../lib/Board');
-    var Piece = require('../lib/Piece');
-    var Position = require('../lib/Position');    
-    var BoardProperties = require('../lib/BoardProperties');
-    var Teams = require('../lib/Teams');
-    var newBoard = require('../lib/NewBoard.json');
-    var testBoard;
-    var whiteTeam = Teams.White;
-    var blackTeam = Teams.Black;
+describe('board tests:', function(){
+    var Board = require('../lib/Board'),
+        Piece = require('../lib/Piece'),
+        Position = require('../lib/Position'),
+        BoardProperties = require('../lib/BoardProperties'),
+        Teams = require('../lib/Teams'),
+        testBoard,
+        whiteTeam = Teams.White,
+        blackTeam = Teams.Black;
 
     beforeEach(function(){
         testBoard = new Board();
