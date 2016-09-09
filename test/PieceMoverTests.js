@@ -137,7 +137,6 @@ describe('PieceMover tests:', function(){
             moves.should.contain(expectedVerticalJumpMove);
             moves.should.contain(expectedVerticalMove);
         });
-
         it('should return one move if pawn has moved', function(){
             var pawn = new Piece(WhiteTeam, new Position('a', 2));
             pawn.hasMoved = true;
@@ -147,7 +146,6 @@ describe('PieceMover tests:', function(){
             moves.length.should.equal(1);
             moves.should.contain(expectedMove);
         });
-
         it('should return moves to take enemy pieces', function(){
 
             var enemyPos1 = new Position('a', 3),
@@ -234,6 +232,108 @@ describe('PieceMover tests:', function(){
                     moves.should.contain(pos);
                 }
             });
+        });
+        it('should should be interrupted by enemy piece', function(){
+            var rook = new Piece(BlackTeam, new Position('h', 8));
+            var pawn = new Piece(WhiteTeam, new Position('h', 2)); 
+            pawn.position.row = 4;
+            var boardPieces = [ rook, pawn ];
+            var moves = PieceMover.private.createMovesLine(boardPieces, rook, Directions.verticalDown);
+            moves.length.should.equal(rook.position.row - pawn.position.row);
+            var pos = new Position(rook.position.column, 3);
+            moves.should.not.contain(pos);
+            for(var i = 7; i >= 4; i--){
+                pos = new Position(rook.position.column, i);
+                moves.should.contain(pos);
+            }
+        });
+        it('should should be interrupted by ally piece', function(){
+            var rook = new Piece(BlackTeam, new Position('h', 8));
+            var pawn = new Piece(BlackTeam, new Position('h', 7)); 
+            pawn.position.row = 4;
+            var boardPieces = [ rook, pawn ];
+            var moves = PieceMover.private.createMovesLine(boardPieces, rook, Directions.verticalDown);
+            moves.length.should.equal(rook.position.row - pawn.position.row - 1);
+            var pos = new Position(rook.position.column, 3);
+            moves.should.not.contain(pos);
+            pos = new Position(rook.position.column, 4);
+            moves.should.not.contain(pos);
+            for(var i = 7; i > 4; i--){
+                pos = new Position(rook.position.column, i);
+                moves.should.contain(pos);
+            }
+        });
+        it('should return 7 moves in the diagonal direction if on a1', function(){
+            var bishop = new Piece(BlackTeam, new Position('a', 1));
+            bishop.type = "bishop";
+            var boardPieces = [ bishop ];
+            var moves = PieceMover.private.createMovesLine(boardPieces, bishop, Directions.diagonalUpRight);
+            moves.length.should.equal(7);
+            moves.should.contain(new Position('c', 3));
+            moves.should.contain(new Position('h', 8));
+        });
+        it('should return 7 moves in the diagonal direction if on a8', function(){
+            var bishop = new Piece(BlackTeam, new Position('a', 8));
+            bishop.type = "bishop";
+            var boardPieces = [ bishop ];
+            var moves = PieceMover.private.createMovesLine(boardPieces, bishop, Directions.diagonalDownRight);
+            moves.length.should.equal(7);
+            moves.should.contain(new Position('f', 3));
+            moves.should.contain(new Position('h', 1));
+        });
+        it('should be blocked by ally piece', function(){
+            var bishop = new Piece(BlackTeam, new Position('h', 1));
+            var piece = new Piece(BlackTeam, new Position('d', 5));
+            bishop.type = "bishop";
+            var boardPieces = [ bishop, piece ];
+            var moves = PieceMover.private.createMovesLine(boardPieces, bishop, Directions.diagonalUpLeft);
+            moves.length.should.equal(3);
+            moves.should.contain(new Position('f', 3));
+            moves.should.contain(new Position('e', 4));
+            moves.should.not.contain(new Position('d', 5));
+            moves.should.not.contain(new Position('c', 6));
+        });
+        it('should be stopped by enemy piece', function(){
+            var bishop = new Piece(BlackTeam, new Position('h', 8));
+            var piece = new Piece(WhiteTeam, new Position('c', 3));
+            bishop.type = "bishop";
+            var boardPieces = [ bishop, piece ];
+            var moves = PieceMover.private.createMovesLine(boardPieces, bishop, Directions.diagonalDownLeft);
+            moves.length.should.equal(5);
+            moves.should.contain(new Position('f', 6));
+            moves.should.contain(new Position('c', 3));
+            moves.should.not.contain(new Position('b', 2));
+        });
+    });
+    describe('getRookMoves', function(){
+        it('should return all vertical and horizontal moves in each direction', function(){
+             var rook = new Piece(BlackTeam, new Position('h', 8));
+            rook.position.row = 4;
+            rook.position.column = 'd';
+            var boardPieces = [ rook ];
+            var moves = PieceMover.private.getRookMoves(boardPieces, rook);
+            moves.length.should.equal(14);
+        });
+        it('should return all vertical and horizontal moves if one direction does not return an multiple moves', function(){
+             var rook = new Piece(BlackTeam, new Position('h', 8));
+            rook.position.row = 7;
+            var boardPieces = [ rook ];
+            var moves = PieceMover.private.getRookMoves(boardPieces, rook);
+            moves.length.should.equal(14);
+        });
+        it('should return all vertical and horizontal moves in two directions', function(){
+            var rook = new Piece(BlackTeam, new Position('h', 8));
+            var boardPieces = [ rook ];
+            var moves = PieceMover.private.getRookMoves(boardPieces, rook);
+            moves.length.should.equal(14);
+        });
+        it('should return all vertical and horizontal moves in two directions and blocked by pieces', function(){
+            var rook = new Piece(BlackTeam, new Position('a', 8));
+            var piece1 = new Piece(BlackTeam, new Position('e', 8));
+            var piece2 = new Piece(WhiteTeam, new Position('a', 3));
+            var boardPieces = [ rook, piece1, piece2 ];
+            var moves = PieceMover.private.getRookMoves(boardPieces, rook);
+            moves.length.should.equal(8);
         });
     });
 });
