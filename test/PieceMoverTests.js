@@ -401,4 +401,36 @@ describe('PieceMover tests:', function(){
             moves.length.should.equal(3);
         });
     });
+    describe('getKnightMoves', function(){
+        it('should return 4 moves in the middle of the board', function(){
+            var knight = new Piece(WhiteTeam, new Position('b', 1));
+            knight.position.row = 5;
+            knight.position.column = 'e';
+            var boardPieces = [ knight ];
+            var moves = PieceMover.private.getKnightMoves(boardPieces, knight);
+            moves.length.should.equal(8);
+            moves.should.contain(new Position('f', 7));
+            moves.should.contain(new Position('c', 4));
+        });
+        it('should only return moves within boundries of the board', function(){
+            var knight = new Piece(WhiteTeam, new Position('b', 1));
+            var boardPieces = [ knight ];
+            var moves = PieceMover.private.getKnightMoves(boardPieces, knight);
+            moves.length.should.equal(3);
+            moves.should.contain(new Position('a', 3));
+            moves.should.contain(new Position('c', 3));
+            moves.should.contain(new Position('d', 2));
+        });
+    });
+    describe('movePiece', function(){
+        it('should move if the move is valid', function(){
+            var queen = new Piece(WhiteTeam, new Position('d', 1));
+            var board = new Board();
+            board.Pieces = [ queen ];
+            var move = new Position('h', 5);
+            PieceMover.getValidMoves(board.Pieces, queen);
+            PieceMover.movePiece(board, queen, move);
+            queen.position.equals(move);
+        });
+    });
 });
