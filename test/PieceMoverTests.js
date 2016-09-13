@@ -2,7 +2,7 @@ var PieceMover = require('../lib/PieceMover'),
     Piece = require('../lib/Piece'),
     Position = require('../lib/Position'),
     Directions = require('../lib/Directions'),
-    Board = require('../lib/Board');
+    Board = require('../lib/Board'),
     BoardProperties = require('../lib/BoardProperties'),
     chai = require('chai'),
     should = chai.should(),
@@ -431,6 +431,17 @@ describe('PieceMover tests:', function(){
             PieceMover.getValidMoves(board.Pieces, queen);
             PieceMover.movePiece(board, queen, move);
             queen.position.equals(move);
+        });
+        it('should refresh valid moves after a move', function(){
+            var board = new Board();
+            var piece = board.Pieces[1];
+            var move = new Position('a', 4);
+            PieceMover.getValidMovesForTeam(board, WhiteTeam);
+            PieceMover.movePiece(board, piece, move);
+            piece.position.equals(move);
+            PieceMover.getValidMovesForTeam(board, BlackTeam);
+            PieceMover.getValidMovesForTeam(board, WhiteTeam);
+            piece.validMoves.length.should.not.equal(0);
         });
     });
 });

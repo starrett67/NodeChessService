@@ -4,7 +4,8 @@
   "description": "This package contains backend code for a chess game",
   "main": "index.js",
   "dependencies": {
-    "shortid": "^2.2.6"
+    "shortid": "^2.2.6",
+    "prompt-sync": "^4.1.4"
   },
   "devDependencies": {
     "mocha": "^2.5.3",

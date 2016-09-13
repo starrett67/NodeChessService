@@ -20,6 +20,26 @@
             "externalConsole": false,
             "sourceMaps": false,
             "outDir": null
+        },
+        {
+            "name": "run game",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceRoot}/lib/ConsolePlayer.js",
+            "stopOnEntry": false,
+            "args": [],
+            "cwd": "${workspaceRoot}/lib/",
+            "preLaunchTask": null,
+            "runtimeExecutable": null,
+            "runtimeArgs": [
+                "--nolazy"
+            ],
+            "env": {
+                "NODE_ENV": "development"
+            },
+            "externalConsole": false,
+            "sourceMaps": false,
+            "outDir": null
         }
     ]
 }
