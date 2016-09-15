@@ -21,7 +21,7 @@ describe('board tests:', function(){
         BoardProperties.forEachColumn(function(col){
             for(var row = 1; row <= 8; row++){
                 var pos = new Position(col, row);
-                var spot = testBoard.Pieces.getPieceInPosition(pos);
+                var spot = testBoard.getPieceInPosition(pos);
                 if(row <= whiteRowLength){
                     var piece = new Piece(whiteTeam, pos);
                     spot.should.deep.equal(piece);
@@ -35,7 +35,7 @@ describe('board tests:', function(){
         BoardProperties.forEachColumn(function(col){
             for(var row = 1; row <= 8; row++){
                 var pos = new Position(col, row);
-                var spot = testBoard.Pieces.getPieceInPosition(pos);
+                var spot = testBoard.getPieceInPosition(pos);
                 if(row >= blackRowLength){
                     var piece = new Piece(blackTeam, pos);
                     spot.should.deep.equal(piece);
